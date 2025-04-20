@@ -1,0 +1,15 @@
+# Environnement virtuel
+.venv/
+
+# Fichiers temporaires Python
+__pycache__/
+*.pyc
+
+# Streamlit
+.streamlit/
+
+# Jupyter notebooks checkpoints (si jamais)
+.ipynb_checkpoints/
+
+# Mac OS
+.DS_Store
