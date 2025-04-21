@@ -21,16 +21,38 @@ selected_date = pd.to_datetime(selected_str, format="%d/%m/%Y")
 
 # Données du jour sélectionné
 row = report[report["Date"] == selected_date].iloc[0]
+vl_initiale = report.iloc[0]["Valeur Liquidative"]
+vl_actuelle = row["Valeur Liquidative"]
+perf_cumulee = (vl_actuelle / vl_initiale) - 1
+# Cherche le jour de marché précédent 
+veille = data["jours_marche"][data["jours_marche"]["Date"] < selected_date]["Date"].max()
+
+if pd.isna(veille):
+    perf_jour = None
+else:
+    vl_veille = report[report["Date"] == veille]["Valeur Liquidative"].values[0]
+    perf_jour = (vl_actuelle / vl_veille) - 1
+
+def format_perf(perf):
+    if perf is None:
+        return "N/A"
+    color = "green" if perf > 0 else "red" if perf < 0 else "black"
+    return f"<span style='color:{color}'>{perf:.2%}</span>"
+
 st.markdown("### 📊 Résumé du jour")
 st.markdown(f"""
 - 🟢 **Achats** : {row["Nombre d'Achats"]}
 - 🔴 **Ventes** : {row["Nombre de Ventes"]}
 - 🟠 **Shorts** : {row["Nombre de Shorts"]}
 - 🟣 **Rachats** : {row["Nombre de Rachats"]}
-- 💸 **Frais** : {row['Frais']:.2f} USD
-- 💰 **Cash** : {row['Cash']:.2f} USD
-- 📈 **Valeur Liquidative (VL)** : **{row['Valeur Liquidative']:.2f} USD**
-""")
+- 💸 **Frais** : {row['Frais']:.2f} $
+- 💰 **Cash** : {row['Cash']:.2f} $
+- 📈 **Valeur Liquidative (VL)** : **{row['Valeur Liquidative']:.2f} $**
+- 📊 **Performance journalière** : {format_perf(perf_jour)}
+- 📊 **Performance cumulée depuis le début** : **{format_perf(perf_cumulee)}**
+""", unsafe_allow_html=True)
+
+
 
 # Helper pour affichage formaté (Performance du titre en vert, Souss-performance en rouge)
 def get_variation_colors(col):
