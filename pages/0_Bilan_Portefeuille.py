@@ -53,13 +53,15 @@ mean_return_ptf_daily = merged["Rendement_Ptf"].mean()
 std_return_ptf_daily = merged["Rendement_Ptf"].std()
 vol_ptf = std_return_ptf_daily * np.sqrt(252)
 
+
+perf_annualise = (1+perf_ptf)**(252/303)-1
 # --- Sharpe Ratio (annualisé avec taux sans risque) ---
-sharpe_ptf = (mean_return_ptf_daily * 252 - rf_annual) / (vol_ptf*np.sqrt(252))
+sharpe_ptf = (perf_annualise - rf_annual) / (vol_ptf)
 
 # Sortino
 downside = merged["Rendement_Ptf"][merged["Rendement_Ptf"] < 0]
 downside_risk = downside.std() * np.sqrt(252)
-sortino = merged["Rendement_Ptf"].mean() / downside_risk if downside_risk != 0 else np.nan
+sortino = (perf_annualise - rf_annual)/ downside_risk if downside_risk != 0 else np.nan
 
 # Treynor & Beta & R²
 X = merged["Rendement_Benchmark"].values.reshape(-1, 1)
@@ -67,7 +69,7 @@ y = merged["Rendement_Ptf"].values
 reg = LinearRegression().fit(X, y)
 beta = reg.coef_[0]
 r_squared = reg.score(X, y)
-treynor = merged["Rendement_Ptf"].mean() / beta if beta != 0 else np.nan
+treynor = (perf_annualise - rf_annual )/ beta 
 
 # Corrélation
 correlation = merged["Rendement_Ptf"].corr(merged["Rendement_Benchmark"])
