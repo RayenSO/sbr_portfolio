@@ -76,5 +76,5 @@ st.dataframe(
     df_perf_clean.style
         .format("{:.2%}")
         .applymap(color_perf),
-    use_container_width=True
-)
+    use_container_width=True)
+

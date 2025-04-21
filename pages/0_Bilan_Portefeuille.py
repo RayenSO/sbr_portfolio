@@ -18,6 +18,8 @@ report = compute_daily_report(
     taux_cash=0.03
 )
 
+rf_annual = 0.0475
+rf_daily = rf_annual/252
 # --- Préparation des données (depuis 16 janvier 2024) ---
 report = report.sort_values("Date")
 vl_series = report[["Date", "Valeur Liquidative"]].copy()
@@ -41,7 +43,18 @@ perf_bench = benchmark["Prix"].iloc[-1] / benchmark["Prix"].iloc[0] - 1
 
 vol_ptf = merged["Rendement_Ptf"].std() * np.sqrt(252)
 vol_bench = merged["Rendement_Benchmark"].std() * np.sqrt(252)
-sharpe_ptf = merged["Rendement_Ptf"].mean() / merged["Rendement_Ptf"].std()
+
+# --- Taux sans risque ---
+rf_annual = 0.0475
+rf_daily = rf_annual / 252
+
+# --- Rendement & volatilité du portefeuille ---
+mean_return_ptf_daily = merged["Rendement_Ptf"].mean()
+std_return_ptf_daily = merged["Rendement_Ptf"].std()
+vol_ptf = std_return_ptf_daily * np.sqrt(252)
+
+# --- Sharpe Ratio (annualisé avec taux sans risque) ---
+sharpe_ptf = (mean_return_ptf_daily * 252 - rf_annual) / vol_ptf
 
 # Sortino
 downside = merged["Rendement_Ptf"][merged["Rendement_Ptf"] < 0]

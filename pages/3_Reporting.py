@@ -86,7 +86,8 @@ st.dataframe(
         "Valeur": "{:.2f}",
         "Poids %": "{:.2f}%"
     }),
-    use_container_width=True
+    use_container_width=True,
+    hide_index=True
 )
 
 
@@ -113,7 +114,7 @@ perf_bench = (benchmark_mois["Prix"].iloc[-1] / benchmark_mois["Prix"].iloc[0]) 
 vol_ptf = merged["Rendement_Ptf"].std() * np.sqrt(252)
 vol_bench = merged["Rendement_Benchmark"].std() * np.sqrt(252)
 
-sharpe_ptf = merged["Rendement_Ptf"].mean() / merged["Rendement_Ptf"].std()
+sharpe_ptf = (merged["Rendement_Ptf"].mean() - 0.0475)/ merged["Rendement_Ptf"].std()
 
 # Régression pour Beta et R²
 X = merged["Rendement_Benchmark"].values.reshape(-1, 1)

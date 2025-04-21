@@ -111,5 +111,5 @@ st.dataframe(
             "Variation vs veille": lambda x: f"{x}%" if isinstance(x, float) else x
         })
         .apply(get_variation_colors, subset=["Variation vs veille"]),
-            hide_index=True
+        hide_index=True
 )
