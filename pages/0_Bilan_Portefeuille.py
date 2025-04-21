@@ -54,7 +54,7 @@ std_return_ptf_daily = merged["Rendement_Ptf"].std()
 vol_ptf = std_return_ptf_daily * np.sqrt(252)
 
 # --- Sharpe Ratio (annualisé avec taux sans risque) ---
-sharpe_ptf = (mean_return_ptf_daily * 252 - rf_annual) / vol_ptf
+sharpe_ptf = (mean_return_ptf_daily * 252 - rf_annual) / (vol_ptf*np.sqrt(252))
 
 # Sortino
 downside = merged["Rendement_Ptf"][merged["Rendement_Ptf"] < 0]
