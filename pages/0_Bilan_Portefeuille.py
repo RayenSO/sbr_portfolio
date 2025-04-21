@@ -6,7 +6,7 @@ import plotly.express as px
 from src.data_loader import load_data
 from src.compute_engine import compute_daily_report
 
-st.title("📘 Bilan Global du Portefeuille (Depuis l'inception)")
+st.title("📘 Bilan Global du Portefeuille")
 
 # --- Chargement des données ---
 data = load_data()
@@ -108,7 +108,7 @@ with col3:
     st.markdown(custom_metric("Tracking Error", f"{tracking_error:.2%}"), unsafe_allow_html=True)
 
 # --- Graphique VL vs Benchmark ---
-st.markdown("### 📈 Évolution VL vs Benchmark (normalisée)")
+st.markdown("### 📈 Évolution SBR US BALANCED POWER vs S&P500 exFinancials & Real Estate")
 
 # Normalisation à 100
 vl_series["VL Normalisée"] = vl_series["Valeur Liquidative"] / vl_series["Valeur Liquidative"].iloc[0] * 100
@@ -122,6 +122,6 @@ df_plot = pd.merge(
 )
 
 fig = px.line(df_plot, x="Date", y=["VL Normalisée", "Benchmark Normalisé"],
-              labels={"value": "Valeur (base 100)", "Date": "Date"},
-              title="Évolution comparée VL vs Benchmark")
+              labels={"value": "Valeur $ (base 100)", "Date": "Date"}
+            )
 st.plotly_chart(fig, use_container_width=True)

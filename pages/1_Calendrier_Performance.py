@@ -71,7 +71,8 @@ def color_perf(val):
     return ""
 
 # --- Affichage ---
-st.markdown("### 📊 Performance mensuelle (Portefeuille vs Benchmark)")
+st.markdown("### 📊 Performance mensuelle")
+st.markdown("### SBR US BALANCED POWER vs S&P500 exFinancials & Real Estate")
 st.dataframe(
     df_perf_clean.style
         .format("{:.2%}")

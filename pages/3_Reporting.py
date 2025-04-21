@@ -184,7 +184,7 @@ with col2:
     st.plotly_chart(fig2, use_container_width=True)
 
 
-st.markdown("### 📈 Évolution VL vs Benchmark (base 100)")
+st.markdown("### 📈 Évolution SBR US BALANCED POWER vs S&P500 exFinancials & Real Estate")
 
 # Préparer les deux séries
 vl_norm = report_mois[["Date", "Valeur Liquidative"]].copy()
@@ -205,7 +205,7 @@ if not vl_norm.empty and not benchmark_norm.empty:
     )
 
     fig = px.line(df_plot, x="Date", y=["VL normalisée", "Benchmark normalisé"],
-                  labels={"value": "Valeur (base 100)", "Date": "Date"},
+                  labels={"value": "Valeur $ (base 100)", "Date": "Date"},
                   title="Évolution comparée VL vs Benchmark")
     st.plotly_chart(fig, use_container_width=True)
 else:
